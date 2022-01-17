@@ -10,7 +10,7 @@ function App() {
     <div className='App'>
       {/* <Formik_app /> */}
       <FormikForm />
-      <ValidationSchemaExample />
+      {/* <ValidationSchemaExample /> */}
     </div>
   );
 }
