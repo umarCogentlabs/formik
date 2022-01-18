@@ -3,6 +3,7 @@ import { Formik, Form, Field } from "formik";
 import NewLine from "./NewLine";
 import { useState, useEffect } from "react";
 import * as Yup from "yup";
+import { debug } from "console";
 
 interface MyFormValues {
   full_name: String;
@@ -27,7 +28,13 @@ const ContactAddSchema = Yup.object().shape({
 });
 
 export const FormikForm = () => {
-  const [contacts, setContacts] = useState<contactsState[]>([]);
+  const contactsInitial: any =
+    JSON.parse(localStorage.getItem("contacts") || "") || [];
+
+  const [contacts, setContacts] = useState<contactsState[]>(contactsInitial);
+
+  debugger;
+
   let initialValues: MyFormValues = { full_name: "", phoneNumber: "" };
   const [initialValuesState, setInitialValues] = useState(initialValues);
 
@@ -53,9 +60,22 @@ export const FormikForm = () => {
     });
   };
 
+  useEffect(() => {
+    debugger;
+    console.log("useeffect");
+    localStorage.setItem("contacts", JSON.stringify(contacts));
+
+    // localStorage.setItem("contacts", JSON.stringify(contacts));
+    // const myContacts: any = localStorage.getItem("contacts");
+    // setContacts(JSON.parse(myContacts));
+    debugger;
+  }, [contacts]);
+
+  const [storageContacts, setStorageContacts] = useState([]);
+
   const handleSubmit = (values: MyFormValues, { resetForm }: any) => {
     resetForm({ values: initialValues });
-    debugger;
+    // debugger;
     editButton.buttonName === "Add" &&
       setContacts([
         ...contacts,
@@ -76,7 +96,15 @@ export const FormikForm = () => {
         index: 0,
       });
     }
+
+    localStorage.setItem("contacts", JSON.stringify(contacts));
+    console.log(localStorage);
+    setStorageContacts(JSON.parse(localStorage.contacts));
+    console.log("storage");
+    // debugger;
   };
+
+  console.log("storage Contacts", storageContacts);
 
   //search area...........................................................................
   // interface searchContact {
@@ -89,34 +117,18 @@ export const FormikForm = () => {
     MyFormValues[]
   >([]);
 
-  // const handleSearchSubmit = (values: searchContact) => {
-  //   setSearchContactsArray([]);
-
-  //   if (values.searchValue != "") {
-  //     setSearchMode(true);
-  //   } else {
-  //     setSearchMode(false);
-  //   }
-  //   const searchString: any = values.searchValue;
-  //   contacts.map((contact) => {
-  //     if (contact.full_name.toLowerCase().includes(searchString)) {
-  //       searchContactsArray.push(contact);
-  //     }
-  //   });
-  //   setSearchArray([...searchContactsArray]);
-  // };
-
-  //simple form..................................................................................................................
-  const [inputValue, setInputValue] = useState("");
+  var [inputValue, setInputValue] = useState("");
+  debugger;
   const onChangeHandler = (event: any) => {
     setInputValue(event.target.value);
     debugger;
 
-    if (inputValue !== "") {
+    if (inputValue) {
       setSearchMode(true);
     } else {
       setSearchMode(false);
     }
+    // alert(searchMode);
 
     setSearchContactsArray([]);
     // const searchString: any = inputValue;
@@ -173,25 +185,6 @@ export const FormikForm = () => {
       <NewLine />
 
       {/* search */}
-      {/* <Formik
-        initialValues={initialValueSearch}
-        // enableReinitialize={true}
-        // validationSchema={ContactAddSchema}
-        onSubmit={handleSearchSubmit}>
-        {({ errors, touched }) => (
-          <Form>
-            <label htmlFor='searchValue'>Search</label>
-            <Field
-              // onChange={handleSearchSubmit}
-              id='searchValue'
-              name='searchValue'
-              on
-              placeholder=''
-            />
-            <button type='submit'>Search</button>
-          </Form>
-        )}
-      </Formik> */}
 
       <input
         type='text'
@@ -213,7 +206,11 @@ export const FormikForm = () => {
           </tr>
 
           {!searchMode &&
-            contacts.map((contact, i) => {
+            // localStorage.contacts &&
+            // JSON.parse(localStorage.contacts).
+            // storageContacts.length !== 0 &&
+            contacts.map((contact: any, i: any) => {
+              debugger;
               return (
                 <tr key={i}>
                   <td>{contact.full_name}</td>
@@ -221,6 +218,11 @@ export const FormikForm = () => {
                   <td>
                     <button id={`${i}`} onClick={() => handleEdit(i)}>
                       Edit
+                    </button>
+                  </td>
+                  <td>
+                    <button id={`${i}`} onClick={() => handleEdit(i)}>
+                      View
                     </button>
                   </td>
                 </tr>
