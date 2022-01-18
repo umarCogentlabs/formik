@@ -3,7 +3,10 @@ import { Formik, Form, Field } from "formik";
 import NewLine from "./NewLine";
 import { useState, useEffect } from "react";
 import * as Yup from "yup";
-import { debug } from "console";
+import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
+import ViewContact from "./ViewContact";
+import { PhoneNumber } from "libphonenumber-js/types";
+import { useNavigate } from "react-router-dom";
 
 interface MyFormValues {
   full_name: String;
@@ -59,17 +62,10 @@ export const FormikForm = () => {
       index: itemID,
     });
   };
-
-  useEffect(() => {
-    debugger;
-    console.log("useeffect");
-    localStorage.setItem("contacts", JSON.stringify(contacts));
-
-    // localStorage.setItem("contacts", JSON.stringify(contacts));
-    // const myContacts: any = localStorage.getItem("contacts");
-    // setContacts(JSON.parse(myContacts));
-    debugger;
-  }, [contacts]);
+  const navigate = useNavigate();
+  const handleView = (itemID: any) => {
+    navigate("../about");
+  };
 
   const [storageContacts, setStorageContacts] = useState([]);
 
@@ -141,6 +137,14 @@ export const FormikForm = () => {
   };
 
   // useEffect(() => {}, [searchContactsArray,]);
+  useEffect(() => {
+    localStorage.setItem("contacts", JSON.stringify(contacts));
+
+    // localStorage.setItem("contacts", JSON.stringify(contacts));
+    // const myContacts: any = localStorage.getItem("contacts");
+    // setContacts(JSON.parse(myContacts));
+  }, [contacts, editButton, inputValue]);
+
   return (
     <div>
       <h1>Add Contact</h1>
@@ -221,7 +225,7 @@ export const FormikForm = () => {
                     </button>
                   </td>
                   <td>
-                    <button id={`${i}`} onClick={() => handleEdit(i)}>
+                    <button id={`${i}`} onClick={() => handleView(i)}>
                       View
                     </button>
                   </td>
