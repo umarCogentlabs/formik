@@ -6,7 +6,7 @@ import * as Yup from "yup";
 import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
 import ViewContact from "./ViewContact";
 import { PhoneNumber } from "libphonenumber-js/types";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 interface MyFormValues {
   full_name: String;
@@ -62,9 +62,13 @@ export const FormikForm = () => {
       index: itemID,
     });
   };
-  const navigate = useNavigate();
+
+  let navigate = useNavigate();
+  // let { contactID } = useParams();
+
   const handleView = (itemID: any) => {
-    navigate("../about");
+    navigate(`../about/${itemID}`);
+    console.log(itemID);
   };
 
   const [storageContacts, setStorageContacts] = useState([]);
@@ -210,9 +214,6 @@ export const FormikForm = () => {
           </tr>
 
           {!searchMode &&
-            // localStorage.contacts &&
-            // JSON.parse(localStorage.contacts).
-            // storageContacts.length !== 0 &&
             contacts.map((contact: any, i: any) => {
               debugger;
               return (

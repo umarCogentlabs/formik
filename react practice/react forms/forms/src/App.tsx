@@ -5,6 +5,7 @@ import { Formik_app } from "./components/Signup/Signup";
 import { FormikForm } from "./components/FormikForm/FormikForm";
 import { ValidationSchemaExample } from "./components/validation_temp/Validation";
 import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
+import ViewContact from "./components/FormikForm/ViewContact";
 export default function App() {
   return (
     <Router>
@@ -27,6 +28,7 @@ export default function App() {
             renders the first one that matches the current URL. */}
         <Routes>
           <Route path='/' element={<FormikForm />} />
+          <Route path='/about/:contactID' element={<ViewContact />} />
 
           {/* <Route path="/users">
             <Users />

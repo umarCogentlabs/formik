@@ -16,14 +16,6 @@ interface MyFormValues {
 }
 
 export const Formik_app = () => {
-  function validateUsername(value: String) {
-    let error;
-    if (value === "admin") {
-      error = "Nice try!";
-    }
-    return error;
-  }
-
   const initialValues: MyFormValues = { name: "" };
   return (
     <div>
